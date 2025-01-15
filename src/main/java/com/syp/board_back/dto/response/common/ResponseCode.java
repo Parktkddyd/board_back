@@ -17,7 +17,7 @@ public enum ResponseCode {
     private final String errorCode;
     private final String message;
 
-    public int getHttpStatusCode(){
+    public int getHttpStatusCode() {
         return httpStatus.value();
     }
 }

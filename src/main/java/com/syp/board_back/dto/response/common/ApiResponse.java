@@ -12,17 +12,17 @@ public class ApiResponse<T> {
 
     private static final int SUCCESS = 200;
 
-    private ApiResponse(ApiHeader header, T data, String message){
+    private ApiResponse(ApiHeader header, T data, String message) {
         this.header = header;
         this.data = data;
         this.message = message;
     }
 
-    public static <T> ApiResponse<T> success(T data, String message){
+    public static <T> ApiResponse<T> success(T data, String message) {
         return new ApiResponse<T>(new ApiHeader(SUCCESS, "SUCCESS"), data, message);
     }
 
-    public static <T> ApiResponse<T> fail(ResponseCode responseCode, T data){
+    public static <T> ApiResponse<T> fail(ResponseCode responseCode, T data) {
         return new ApiResponse<T>(new ApiHeader(responseCode.getHttpStatusCode(), responseCode.getErrorCode()), data, responseCode.getMessage());
     }
 }

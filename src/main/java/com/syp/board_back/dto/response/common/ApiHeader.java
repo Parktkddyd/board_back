@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-class ApiHeader{
+class ApiHeader {
     private int code;
     private String Code;
 }
