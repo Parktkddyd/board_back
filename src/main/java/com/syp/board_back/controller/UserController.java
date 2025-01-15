@@ -1,9 +1,11 @@
 package com.syp.board_back.controller;
 
+import com.syp.board_back.dto.request.signup.DupIdCheckRequest;
 import com.syp.board_back.dto.request.signup.SignupRequest;
-import com.syp.board_back.dto.response.SignUpResponse;
 import com.syp.board_back.dto.response.common.ApiResponse;
 import com.syp.board_back.dto.response.common.ResponseCode;
+import com.syp.board_back.dto.response.signup.DupIdCheckResponse;
+import com.syp.board_back.dto.response.signup.SignUpResponse;
 import com.syp.board_back.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,12 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping("/duplicate")
+    public ApiResponse<DupIdCheckResponse> checkDupId(@RequestBody @Valid DupIdCheckRequest req) {
+        return ApiResponse.success(ResponseCode.ID_DUP_CHECK_SUCCESS, userService.checkId(req),
+                ResponseCode.ID_DUP_CHECK_SUCCESS.getMessage());
     }
 
     @PostMapping("/")
