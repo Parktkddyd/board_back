@@ -10,19 +10,25 @@ public class ApiResponse<T> {
     private T data;
     private String message;
 
-    private static final int SUCCESS = 200;
-
     private ApiResponse(ApiHeader header, T data, String message) {
         this.header = header;
         this.data = data;
         this.message = message;
     }
 
-    public static <T> ApiResponse<T> success(T data, String message) {
-        return new ApiResponse<T>(new ApiHeader(SUCCESS, "SUCCESS"), data, message);
+    private static <T> ApiResponse<T> create(ResponseCode responseCode, T data, String message) {
+        return new ApiResponse<>(
+                new ApiHeader(responseCode.getHttpStatusCode(), responseCode.getCustomStatusCode()),
+                data,
+                message
+        );
     }
 
-    public static <T> ApiResponse<T> fail(ResponseCode responseCode, T data) {
-        return new ApiResponse<T>(new ApiHeader(responseCode.getHttpStatusCode(), responseCode.getErrorCode()), data, responseCode.getMessage());
+    public static <T> ApiResponse<T> success(ResponseCode responseCode, T data, String message) {
+        return create(responseCode, data, message);
+    }
+
+    public static <T> ApiResponse<T> fail(ResponseCode responseCode, T data, String message) {
+        return create(responseCode, data, message);
     }
 }
