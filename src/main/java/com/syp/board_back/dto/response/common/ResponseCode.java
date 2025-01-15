@@ -8,13 +8,14 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ResponseCode {
     //회원가입
-    USER_CREATE_SUCCESS(HttpStatus.CREATED, "0", "회원가입 성공"),
-
+    USER_CREATE_SUCCESS(HttpStatus.CREATED, "ACCOUNT-SIGNUP-201", "회원가입 성공"),
+    //검증값 오류
+    USER_CREATE_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "ACCOUNT-VAL-400", "유효성 검증 실패"),
     //공통 - 서버오류 500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Z-001", "서버에 오류가 발생하였습니다.");
 
     private final HttpStatus httpStatus;
-    private final String errorCode;
+    private final String customStatusCode;
     private final String message;
 
     public int getHttpStatusCode() {
