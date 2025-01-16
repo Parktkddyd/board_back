@@ -24,7 +24,7 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(DataAccessException.class)
-    public ApiResponse<Void> handlerSignupException(DataAccessException e) {
+    public ApiResponse<Void> handlerDataAccessException(DataAccessException e) {
         return ApiResponse.fail(e.getResponseCode(), null, e.getResponseCode().getMessage());
     }
 }

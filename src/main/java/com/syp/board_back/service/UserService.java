@@ -25,7 +25,7 @@ public class UserService {
             boolean isDuplicate = userMapper.checkDupId(reqId);
             return new DupIdCheckResponse(reqId, isDuplicate);
         } catch (Exception e) {
-            throw new DataAccessException(ResponseCode.INTERNAL_SERVER_ERROR);
+            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
         }
     }
 
@@ -37,7 +37,7 @@ public class UserService {
             Long addUserOrder = userMapper.addUser(user);
             return new SignUpResponse(addUserOrder);
         } catch (Exception e) {
-            throw new DataAccessException(ResponseCode.INTERNAL_SERVER_ERROR);
+            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
         }
     }
 
