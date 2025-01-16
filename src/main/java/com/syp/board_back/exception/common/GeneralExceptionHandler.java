@@ -20,8 +20,8 @@ public class GeneralExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
 
-        return ApiResponse.fail(ResponseCode.USER_CREATE_VALIDATION_ERROR, errors,
-                ResponseCode.USER_CREATE_VALIDATION_ERROR.getMessage());
+        return ApiResponse.fail(ResponseCode.USER_VALIDATION_ERROR, errors,
+                ResponseCode.USER_VALIDATION_ERROR.getMessage());
     }
 
     @ExceptionHandler(LoginException.class)

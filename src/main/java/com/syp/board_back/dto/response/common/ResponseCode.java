@@ -18,7 +18,7 @@ public enum ResponseCode {
     //비밀번호 오류
     USER_LOGIN_PASS_FAIL(HttpStatus.BAD_REQUEST, "ACCOUNT-LOGIN-400-2", "비밀번호 오류"),
     //검증값 오류
-    USER_CREATE_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "ACCOUNT-VAL-400", "유효성 검증 실패"),
+    USER_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "ACCOUNT-VAL-400", "유효성 검증 실패"),
     //공통 - 데이터 베이스 오류
     DB_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "서버에 오류가 발생하였습니다.");
 
