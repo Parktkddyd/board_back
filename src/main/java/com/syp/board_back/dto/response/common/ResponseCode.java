@@ -11,6 +11,12 @@ public enum ResponseCode {
     USER_CREATE_SUCCESS(HttpStatus.CREATED, "ACCOUNT-SIGNUP-201", "회원가입 성공"),
     //중복체크 성공
     ID_DUP_CHECK_SUCCESS(HttpStatus.OK, "ACCOUNT-DUP-200", "검색 성공"),
+    //로그인 성공
+    USER_LOGIN_SUCCESS(HttpStatus.OK, "ACCOUNT-LOGIN-200", "로그인 성공"),
+    //아이디 오류
+    USER_LOGIN_ID_FAIL(HttpStatus.BAD_REQUEST, "ACCOUNT-LOGIN-400-1", "아이디 오류"),
+    //비밀번호 오류
+    USER_LOGIN_PASS_FAIL(HttpStatus.BAD_REQUEST, "ACCOUNT-LOGIN-400-2", "비밀번호 오류"),
     //검증값 오류
     USER_CREATE_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "ACCOUNT-VAL-400", "유효성 검증 실패"),
     //공통 - 데이터 베이스 오류

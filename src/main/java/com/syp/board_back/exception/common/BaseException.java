@@ -1,4 +1,4 @@
-package com.syp.board_back.exception;
+package com.syp.board_back.exception.common;
 
 import com.syp.board_back.dto.response.common.ResponseCode;
 import lombok.AllArgsConstructor;

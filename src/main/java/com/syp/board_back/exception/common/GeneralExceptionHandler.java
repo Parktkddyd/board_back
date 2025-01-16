@@ -3,6 +3,7 @@ package com.syp.board_back.exception.common;
 import com.syp.board_back.dto.response.common.ApiResponse;
 import com.syp.board_back.dto.response.common.ResponseCode;
 import com.syp.board_back.exception.DataAccessException;
+import com.syp.board_back.exception.LoginException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,8 +24,14 @@ public class GeneralExceptionHandler {
                 ResponseCode.USER_CREATE_VALIDATION_ERROR.getMessage());
     }
 
+    @ExceptionHandler(LoginException.class)
+    public ApiResponse<Void> handlerLoginException(LoginException e) {
+        return ApiResponse.fail(e.getResponseCode(), null, e.getResponseCode().getMessage());
+    }
+
     @ExceptionHandler(DataAccessException.class)
     public ApiResponse<Void> handlerDataAccessException(DataAccessException e) {
         return ApiResponse.fail(e.getResponseCode(), null, e.getResponseCode().getMessage());
     }
+
 }
