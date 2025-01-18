@@ -13,8 +13,11 @@ import com.syp.board_back.exception.LoginException;
 import com.syp.board_back.mapper.UserMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @Service
 public class UserService {
 
@@ -34,6 +37,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public SignUpResponse addUser(SignupRequest signupReq) {
         User user = new User(signupReq.getUser_id(), signupReq.getUser_password(),
                 signupReq.getUser_email(), signupReq.getUser_phone());
@@ -41,6 +45,8 @@ public class UserService {
         try {
             Long addUserOrder = userMapper.addUser(user);
             return new SignUpResponse(addUserOrder);
+        } catch (DuplicateKeyException dke) {
+            throw new DataAccessException(ResponseCode.DB_DUPLICATE_ERROR);
         } catch (Exception e) {
             throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
         }

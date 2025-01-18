@@ -20,7 +20,8 @@ public enum ResponseCode {
     //검증값 오류
     USER_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "ACCOUNT-VAL-400", "유효성 검증 실패"),
     //공통 - 데이터 베이스 오류
-    DB_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "서버에 오류가 발생하였습니다.");
+    DB_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "서버에 오류가 발생하였습니다."),
+    DB_DUPLICATE_ERROR(HttpStatus.CONFLICT, "D-002", "중복된 값 입니다.");
 
     private final HttpStatus httpStatus;
     private final String customStatusCode;
