@@ -11,6 +11,7 @@ import com.syp.board_back.dto.response.signup.SignUpResponse;
 import com.syp.board_back.exception.DataAccessException;
 import com.syp.board_back.exception.LoginException;
 import com.syp.board_back.mapper.UserMapper;
+import com.syp.board_back.utils.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.dao.DuplicateKeyException;
@@ -61,7 +62,8 @@ public class UserService {
 
         //로그인 성공 시 세션을 생성하고 사용자 정보 저장
         HttpSession session = servletReq.getSession();
-        return new LoginResponse(session.getId());
+        session.setAttribute(SessionConst.LOGIN_USER, user);
+        return new LoginResponse(SessionConst.LOGIN_USER);
 
     }
 
