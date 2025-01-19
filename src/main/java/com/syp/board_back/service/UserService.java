@@ -11,6 +11,7 @@ import com.syp.board_back.dto.response.signup.SignUpResponse;
 import com.syp.board_back.exception.DataAccessException;
 import com.syp.board_back.exception.LoginException;
 import com.syp.board_back.mapper.UserMapper;
+import com.syp.board_back.utils.PasswordEncryptUtil;
 import com.syp.board_back.utils.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -40,8 +41,13 @@ public class UserService {
 
     @Transactional
     public SignUpResponse addUser(SignupRequest signupReq) {
-        User user = new User(signupReq.getUser_id(), signupReq.getUser_password(),
-                signupReq.getUser_email(), signupReq.getUser_phone());
+        String salt = PasswordEncryptUtil.getSalt();
+
+        User user = new User(signupReq.getUser_id(),
+                PasswordEncryptUtil.sha256EncryptWithSalt(signupReq.getUser_password(), salt),
+                salt,
+                signupReq.getUser_email(),
+                signupReq.getUser_phone());
 
         try {
             Long addUserOrder = userMapper.addUser(user);
@@ -81,9 +87,20 @@ public class UserService {
         if (!reqId.equals(user.getUser_id())) {
             throw new LoginException(ResponseCode.USER_LOGIN_ID_FAIL);
         }
-        if (!reqPass.equals(user.getUser_password())) {
+        if (!passwordDecrypt(reqId, reqPass).equals(user.getUser_password())) {
             throw new LoginException(ResponseCode.USER_LOGIN_PASS_FAIL);
         }
+    }
+
+    private String passwordDecrypt(String reqId, String reqPass) {
+        String salt = userMapper.findSaltById(reqId);
+
+        if (salt == null) {
+            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
+        }
+
+        return PasswordEncryptUtil.sha256EncryptWithSalt(reqPass, salt);
+
     }
 
 
