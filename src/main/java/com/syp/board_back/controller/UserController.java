@@ -40,6 +40,6 @@ public class UserController {
     @PostMapping("/login")
     public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest loginReq, HttpServletRequest servletReq) {
         return ApiResponse.success(ResponseCode.USER_LOGIN_SUCCESS, userService.login(loginReq, servletReq),
-                ResponseCode.USER_LOGIN_SUCCESS.getCustomStatusCode());
+                ResponseCode.USER_LOGIN_SUCCESS.getMessage());
     }
 }
