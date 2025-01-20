@@ -25,7 +25,9 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 
             response.getWriter().write(jsonResponse);
             return false;
+        } else {
+            ApiResponse<Void> customResponse = ApiResponse.fail(ResponseCode.USER_ACCESS_OK, null, ResponseCode.USER_NOT_ACCESS.getMessage());
+            return true;
         }
-        return true;
     }
 }

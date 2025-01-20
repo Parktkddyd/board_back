@@ -21,6 +21,10 @@ public enum ResponseCode {
     USER_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "ACCOUNT-VAL-400", "유효성 검증 실패"),
     //세션 인증 실패
     USER_NOT_ACCESS(HttpStatus.FORBIDDEN, "USER-ACCESS-403", "세션이 없는 유저의 접근"),
+    //세션 인증 성공
+    USER_ACCESS_OK(HttpStatus.OK, "USER-ACCESS-200", "세션 인증 성공"),
+    //로그아웃 성공
+    USER_LOGOUT_SUCCESS(HttpStatus.OK, "ACCOUNT-LOGOUT-200", "로그아웃 성공"),
     //공통 - 데이터 베이스 오류
     DB_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "서버에 오류가 발생하였습니다."),
     DB_DUPLICATE_ERROR(HttpStatus.CONFLICT, "D-002", "중복된 값 입니다.");
