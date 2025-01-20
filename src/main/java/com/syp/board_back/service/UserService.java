@@ -73,6 +73,11 @@ public class UserService {
 
     }
 
+    public void logout(HttpServletRequest servletReq) {
+        HttpSession session = servletReq.getSession(false);
+        session.invalidate();
+    }
+
     private User getUserById(String userId) {
         // 사용자 정보 조회
         User user = userMapper.findById(userId);
@@ -102,6 +107,4 @@ public class UserService {
         return PasswordEncryptUtil.sha256EncryptWithSalt(reqPass, salt);
 
     }
-
-
 }

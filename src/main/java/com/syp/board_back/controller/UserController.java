@@ -42,4 +42,11 @@ public class UserController {
         return ApiResponse.success(ResponseCode.USER_LOGIN_SUCCESS, userService.login(loginReq, servletReq),
                 ResponseCode.USER_LOGIN_SUCCESS.getMessage());
     }
+
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(HttpServletRequest servletReq) {
+        userService.logout(servletReq);
+        return ApiResponse.success(ResponseCode.USER_LOGOUT_SUCCESS, null,
+                ResponseCode.USER_LOGOUT_SUCCESS.getMessage());
+    }
 }
