@@ -1,7 +1,6 @@
-package com.syp.board_back.exception;
+package com.syp.board_back.common.exception;
 
-import com.syp.board_back.dto.response.common.ResponseCode;
-import com.syp.board_back.exception.common.BaseException;
+import com.syp.board_back.dto.common.response.ResponseCode;
 
 public class DataAccessException extends BaseException {
     public DataAccessException(ResponseCode responseCode) {

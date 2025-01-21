@@ -1,4 +1,4 @@
-package com.syp.board_back.dto.response.common;
+package com.syp.board_back.dto.common.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

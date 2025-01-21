@@ -1,4 +1,4 @@
-package com.syp.board_back.utils;
+package com.syp.board_back.common.util;
 
 import com.google.common.hash.Hashing;
 

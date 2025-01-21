@@ -1,4 +1,4 @@
-package com.syp.board_back.dto.request.signup;
+package com.syp.board_back.dto.user.request.signup;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

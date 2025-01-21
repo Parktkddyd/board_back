@@ -1,6 +1,6 @@
-package com.syp.board_back.exception.common;
+package com.syp.board_back.common.exception;
 
-import com.syp.board_back.dto.response.common.ResponseCode;
+import com.syp.board_back.dto.common.response.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.syp.board_back.dto.response.login;
+package com.syp.board_back.dto.user.response.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

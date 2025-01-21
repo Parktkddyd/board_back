@@ -1,9 +1,7 @@
-package com.syp.board_back.exception.common;
+package com.syp.board_back.common.exception;
 
-import com.syp.board_back.dto.response.common.ApiResponse;
-import com.syp.board_back.dto.response.common.ResponseCode;
-import com.syp.board_back.exception.DataAccessException;
-import com.syp.board_back.exception.LoginException;
+import com.syp.board_back.dto.common.response.ApiResponse;
+import com.syp.board_back.dto.common.response.ResponseCode;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
