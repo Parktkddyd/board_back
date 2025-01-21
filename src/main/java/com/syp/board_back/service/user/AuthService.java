@@ -1,4 +1,4 @@
-package com.syp.board_back.service;
+package com.syp.board_back.service.user;
 
 import com.syp.board_back.common.constant.SessionConst;
 import com.syp.board_back.common.exception.DataAccessException;
@@ -7,56 +7,21 @@ import com.syp.board_back.common.util.PasswordEncryptUtil;
 import com.syp.board_back.domain.User;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.dto.user.request.login.LoginRequest;
-import com.syp.board_back.dto.user.request.signup.DupIdCheckRequest;
-import com.syp.board_back.dto.user.request.signup.SignupRequest;
 import com.syp.board_back.dto.user.response.login.LoginResponse;
-import com.syp.board_back.dto.user.response.signup.DupIdCheckResponse;
-import com.syp.board_back.dto.user.response.signup.SignUpResponse;
-import com.syp.board_back.mapper.UserMapper;
+import com.syp.board_back.mapper.user.UserMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 @Service
-public class UserService {
+public class AuthService {
 
     private final UserMapper userMapper;
 
-    public UserService(UserMapper userMapper) {
+    public AuthService(UserMapper userMapper) {
         this.userMapper = userMapper;
-    }
-
-    public DupIdCheckResponse checkId(DupIdCheckRequest checkIdReq) {
-        String reqId = checkIdReq.getUser_id();
-        try {
-            boolean isDuplicate = userMapper.checkDupId(reqId);
-            return new DupIdCheckResponse(reqId, isDuplicate);
-        } catch (Exception e) {
-            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
-        }
-    }
-
-    @Transactional
-    public SignUpResponse addUser(SignupRequest signupReq) {
-        String salt = PasswordEncryptUtil.getSalt();
-
-        User user = new User(signupReq.getUser_id(),
-                PasswordEncryptUtil.sha256EncryptWithSalt(signupReq.getUser_password(), salt),
-                salt,
-                signupReq.getUser_email(),
-                signupReq.getUser_phone());
-
-        try {
-            Long addUserOrder = userMapper.addUser(user);
-            return new SignUpResponse(addUserOrder);
-        } catch (DuplicateKeyException dke) {
-            throw new DataAccessException(ResponseCode.DB_DUPLICATE_ERROR);
-        } catch (Exception e) {
-            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
-        }
     }
 
     public LoginResponse login(LoginRequest loginReq, HttpServletRequest servletReq) {
@@ -106,11 +71,5 @@ public class UserService {
 
         return PasswordEncryptUtil.sha256EncryptWithSalt(reqPass, salt);
 
-    }
-
-    public LoginResponse sessionCheck(HttpServletRequest servletReq) {
-        HttpSession session = servletReq.getSession(false);
-
-        return new LoginResponse(session.getId());
     }
 }

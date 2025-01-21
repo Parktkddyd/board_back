@@ -1,4 +1,4 @@
-package com.syp.board_back.mapper;
+package com.syp.board_back.mapper.user;
 
 import com.syp.board_back.domain.User;
 import org.apache.ibatis.annotations.Mapper;
