@@ -1,18 +1,18 @@
 package com.syp.board_back.service;
 
+import com.syp.board_back.common.constant.SessionConst;
+import com.syp.board_back.common.exception.DataAccessException;
+import com.syp.board_back.common.exception.LoginException;
+import com.syp.board_back.common.util.PasswordEncryptUtil;
 import com.syp.board_back.domain.User;
-import com.syp.board_back.dto.request.login.LoginRequest;
-import com.syp.board_back.dto.request.signup.DupIdCheckRequest;
-import com.syp.board_back.dto.request.signup.SignupRequest;
-import com.syp.board_back.dto.response.common.ResponseCode;
-import com.syp.board_back.dto.response.login.LoginResponse;
-import com.syp.board_back.dto.response.signup.DupIdCheckResponse;
-import com.syp.board_back.dto.response.signup.SignUpResponse;
-import com.syp.board_back.exception.DataAccessException;
-import com.syp.board_back.exception.LoginException;
+import com.syp.board_back.dto.common.response.ResponseCode;
+import com.syp.board_back.dto.user.request.login.LoginRequest;
+import com.syp.board_back.dto.user.request.signup.DupIdCheckRequest;
+import com.syp.board_back.dto.user.request.signup.SignupRequest;
+import com.syp.board_back.dto.user.response.login.LoginResponse;
+import com.syp.board_back.dto.user.response.signup.DupIdCheckResponse;
+import com.syp.board_back.dto.user.response.signup.SignUpResponse;
 import com.syp.board_back.mapper.UserMapper;
-import com.syp.board_back.utils.PasswordEncryptUtil;
-import com.syp.board_back.utils.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.dao.DuplicateKeyException;
@@ -69,7 +69,7 @@ public class UserService {
         //로그인 성공 시 세션을 생성하고 사용자 정보 저장
         HttpSession session = servletReq.getSession();
         session.setAttribute(SessionConst.LOGIN_USER, user);
-        return new LoginResponse(SessionConst.LOGIN_USER);
+        return new LoginResponse(session.getId());
 
     }
 
@@ -106,5 +106,11 @@ public class UserService {
 
         return PasswordEncryptUtil.sha256EncryptWithSalt(reqPass, salt);
 
+    }
+
+    public LoginResponse sessionCheck(HttpServletRequest servletReq) {
+        HttpSession session = servletReq.getSession(false);
+
+        return new LoginResponse(session.getId());
     }
 }

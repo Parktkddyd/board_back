@@ -1,6 +1,6 @@
 package com.syp.board_back.configuration;
 
-import com.syp.board_back.utils.SessionCheckInterceptor;
+import com.syp.board_back.common.interceptor.SessionCheckInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionCheckInterceptor)
-                .addPathPatterns("/")
+                .addPathPatterns("/**")
                 .excludePathPatterns("/users/login", "/users/signup");
     }
 

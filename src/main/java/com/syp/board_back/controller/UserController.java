@@ -1,20 +1,17 @@
 package com.syp.board_back.controller;
 
-import com.syp.board_back.dto.request.login.LoginRequest;
-import com.syp.board_back.dto.request.signup.DupIdCheckRequest;
-import com.syp.board_back.dto.request.signup.SignupRequest;
-import com.syp.board_back.dto.response.common.ApiResponse;
-import com.syp.board_back.dto.response.common.ResponseCode;
-import com.syp.board_back.dto.response.login.LoginResponse;
-import com.syp.board_back.dto.response.signup.DupIdCheckResponse;
-import com.syp.board_back.dto.response.signup.SignUpResponse;
+import com.syp.board_back.dto.common.response.ApiResponse;
+import com.syp.board_back.dto.common.response.ResponseCode;
+import com.syp.board_back.dto.user.request.login.LoginRequest;
+import com.syp.board_back.dto.user.request.signup.DupIdCheckRequest;
+import com.syp.board_back.dto.user.request.signup.SignupRequest;
+import com.syp.board_back.dto.user.response.login.LoginResponse;
+import com.syp.board_back.dto.user.response.signup.DupIdCheckResponse;
+import com.syp.board_back.dto.user.response.signup.SignUpResponse;
 import com.syp.board_back.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -48,5 +45,11 @@ public class UserController {
         userService.logout(servletReq);
         return ApiResponse.success(ResponseCode.USER_LOGOUT_SUCCESS, null,
                 ResponseCode.USER_LOGOUT_SUCCESS.getMessage());
+    }
+
+    @GetMapping("/session-check")
+    public ApiResponse<LoginResponse> sessionCheck(HttpServletRequest servletReq) {
+        return ApiResponse.success(ResponseCode.USER_ACCESS_OK, userService.sessionCheck(servletReq),
+                ResponseCode.USER_ACCESS_OK.getMessage());
     }
 }
