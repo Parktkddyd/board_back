@@ -2,7 +2,7 @@ package com.syp.board_back.service.user;
 
 import com.syp.board_back.common.exception.DataAccessException;
 import com.syp.board_back.common.util.PasswordEncryptUtil;
-import com.syp.board_back.domain.User;
+import com.syp.board_back.domain.user.User;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.dto.user.request.signup.DupIdCheckRequest;
 import com.syp.board_back.dto.user.request.signup.SignupRequest;

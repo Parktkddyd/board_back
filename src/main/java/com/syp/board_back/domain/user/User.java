@@ -1,4 +1,4 @@
-package com.syp.board_back.domain;
+package com.syp.board_back.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
