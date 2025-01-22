@@ -43,7 +43,8 @@ public class SignupService {
                 signupReq.getUser_phone());
 
         try {
-            Long addUserOrder = userMapper.addUser(user);
+            userMapper.addUser(user);
+            Long addUserOrder = user.getUser_key();
             return new SignUpResponse(addUserOrder);
         } catch (DuplicateKeyException dke) {
             throw new DataAccessException(ResponseCode.DB_DUPLICATE_ERROR);

@@ -13,8 +13,8 @@ public interface UserMapper {
 
     @Insert("INSERT INTO tbl_user(user_id, user_password, user_salt, user_email, user_phone)" +
             " VALUES (#{user_id}, #{user_password}, #{user_salt}, #{user_email}, #{user_phone})")
-    @Options(useGeneratedKeys = true, keyColumn = "user_key")
-    Long addUser(User user);
+    @Options(useGeneratedKeys = true, keyColumn = "user_key", keyProperty = "user_key")
+    void addUser(User user);
 
     @Select("SELECT * FROM tbl_user WHERE user_id = #{user_id}")
     User findById(String id);
