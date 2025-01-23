@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BoardUpdateResponse {
-    private String board_id;
+    private Long board_id;
     private String board_title;
     private String board_content;
 }

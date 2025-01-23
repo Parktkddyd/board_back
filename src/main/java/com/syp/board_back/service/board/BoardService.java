@@ -44,11 +44,11 @@ public class BoardService {
         }
     }
 
-    public void modifyBoard(String board_id, String title) {
+    public void modifyBoard(Long board_id, String title) {
         boardMapper.updateBoard(board_id, title);
     }
 
-    public BoardUpdateResponse update(String board_id, BoardUpdateRequest updateReq) {
+    public BoardUpdateResponse update(Long board_id, BoardUpdateRequest updateReq) {
         try {
             modifyBoard(board_id, updateReq.getBoard_title());
             boardMapper.updateContent(board_id, updateReq.getBoard_content());

@@ -1,5 +1,6 @@
 package com.syp.board_back.controller.board;
 
+import com.syp.board_back.common.exception.BoardException;
 import com.syp.board_back.dto.board.request.BoardPostRequest;
 import com.syp.board_back.dto.board.request.BoardUpdateRequest;
 import com.syp.board_back.dto.board.response.BoardPostResponse;
@@ -27,9 +28,12 @@ public class BoardController {
                 ResponseCode.POST_SUCCESS.getMessage());
     }
 
-    @PutMapping("/{board_id}")
-    public ApiResponse<BoardUpdateResponse> update(@PathVariable String board_id,
+    @PutMapping({"/{board_id}", "/"})
+    public ApiResponse<BoardUpdateResponse> update(@PathVariable(required = false) Long board_id,
                                                    @RequestBody @Valid BoardUpdateRequest updateReq) {
+        if (board_id == null) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
         return ApiResponse.success(ResponseCode.UPDATE_SUCCESS, boardService.update(board_id, updateReq),
                 ResponseCode.UPDATE_SUCCESS.getMessage());
     }

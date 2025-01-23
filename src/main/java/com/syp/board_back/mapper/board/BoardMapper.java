@@ -17,11 +17,11 @@ public interface BoardMapper {
     void writeContent(BoardContent content);
 
     @Select("SELECT * FROM tbl_board WHERE board_id = #{board_id}")
-    Board selectBoard(String board_id);
+    Board selectBoard(Long board_id);
 
     @Update("UPDATE tbl_board SET board_title = #{board_title}, board_createdAt = now() WHERE board_id = #{board_id}")
-    void updateBoard(String board_id, String board_title);
+    void updateBoard(Long board_id, String board_title);
 
     @Update("UPDATE tbl_content SET board_content = #{board_content} WHERE board_id = #{board_id}")
-    void updateContent(String board_id, String board_content);
+    void updateContent(Long board_id, String board_content);
 }
