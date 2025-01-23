@@ -24,4 +24,7 @@ public interface BoardMapper {
 
     @Update("UPDATE tbl_content SET board_content = #{board_content} WHERE board_id = #{board_id}")
     void updateContent(Long board_id, String board_content);
+
+    @Update("UPDATE tbl_board SET board_isDeleted = 1 WHERE board_id = #{board_id}")
+    void deleteBoard(Long board_id);
 }

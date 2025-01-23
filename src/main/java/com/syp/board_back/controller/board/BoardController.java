@@ -3,6 +3,7 @@ package com.syp.board_back.controller.board;
 import com.syp.board_back.common.exception.BoardException;
 import com.syp.board_back.dto.board.request.BoardPostRequest;
 import com.syp.board_back.dto.board.request.BoardUpdateRequest;
+import com.syp.board_back.dto.board.response.BoardDeleteResponse;
 import com.syp.board_back.dto.board.response.BoardPostResponse;
 import com.syp.board_back.dto.board.response.BoardUpdateResponse;
 import com.syp.board_back.dto.common.response.ApiResponse;
@@ -36,5 +37,14 @@ public class BoardController {
         }
         return ApiResponse.success(ResponseCode.UPDATE_SUCCESS, boardService.update(board_id, updateReq),
                 ResponseCode.UPDATE_SUCCESS.getMessage());
+    }
+
+    @DeleteMapping({"/{board_id}", "/"})
+    public ApiResponse<BoardDeleteResponse> delete(@PathVariable(required = false) Long board_id) {
+        if (board_id == null) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
+        return ApiResponse.success(ResponseCode.DELETE_SUCCESS, boardService.delete(board_id),
+                ResponseCode.DELETE_SUCCESS.getMessage());
     }
 }

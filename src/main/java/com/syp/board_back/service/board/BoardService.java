@@ -5,6 +5,7 @@ import com.syp.board_back.domain.board.Board;
 import com.syp.board_back.domain.board.BoardContent;
 import com.syp.board_back.dto.board.request.BoardPostRequest;
 import com.syp.board_back.dto.board.request.BoardUpdateRequest;
+import com.syp.board_back.dto.board.response.BoardDeleteResponse;
 import com.syp.board_back.dto.board.response.BoardPostResponse;
 import com.syp.board_back.dto.board.response.BoardUpdateResponse;
 import com.syp.board_back.dto.common.response.ResponseCode;
@@ -54,6 +55,15 @@ public class BoardService {
             boardMapper.updateContent(board_id, updateReq.getBoard_content());
             return new BoardUpdateResponse(board_id, updateReq.getBoard_title(),
                     updateReq.getBoard_content());
+        } catch (Exception e) {
+            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
+        }
+    }
+
+    public BoardDeleteResponse delete(Long board_id) {
+        try {
+            boardMapper.deleteBoard(board_id);
+            return new BoardDeleteResponse(board_id, (byte) 1);
         } catch (Exception e) {
             throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
         }
