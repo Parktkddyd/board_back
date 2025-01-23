@@ -20,7 +20,9 @@ public enum ResponseCode {
     //로그아웃 성공
     USER_LOGOUT_SUCCESS(HttpStatus.OK, "ACCOUNT-LOGOUT-200", "로그아웃 성공"),
     //게시글 작성 성공
-    POST_SUCCESS(HttpStatus.OK, "POST-200", "게시글 작성 성공"),
+    POST_SUCCESS(HttpStatus.CREATED, "POST-201", "게시글 작성 성공"),
+    //게시글 수정 성공
+    UPDATE_SUCCESS(HttpStatus.OK, "UPDATE-200", "게시글 수정 성공"),
     //공통 - 데이터 베이스 오류
     DB_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "서버에 오류가 발생하였습니다."),
     DB_DUPLICATE_ERROR(HttpStatus.CONFLICT, "D-002", "중복된 값 입니다."),
@@ -32,7 +34,7 @@ public enum ResponseCode {
     //공통 - 유저 입력값 검증
     //검증값 오류
     USER_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "USER-VAL-400", "유효성 검증 실패");
-    
+
     private final HttpStatus httpStatus;
     private final String customStatusCode;
     private final String message;
