@@ -2,6 +2,7 @@ package com.syp.board_back.mapper.board;
 
 import com.syp.board_back.domain.board.Board;
 import com.syp.board_back.domain.board.BoardContent;
+import com.syp.board_back.dto.board.response.BoardReadResponse;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -16,8 +17,12 @@ public interface BoardMapper {
     @Options(useGeneratedKeys = true, keyColumn = "content_id", keyProperty = "content_id")
     void writeContent(BoardContent content);
 
-    @Select("SELECT * FROM tbl_board WHERE board_id = #{board_id}")
-    Board selectBoard(Long board_id);
+    @Select("SELECT b.board_id, b.board_title, b.user_id," +
+            "b.board_createdAt, b.board_viewCnt, c.board_content " +
+            "FROM tbl_board AS b " +
+            "INNER JOIN tbl_content AS c " +
+            "ON b.board_id = c.board_id WHERE c.board_id = #{board_id} AND b.board_isDeleted = 0")
+    BoardReadResponse selectBoard(Long board_id);
 
     @Update("UPDATE tbl_board SET board_title = #{board_title}, board_createdAt = now() WHERE board_id = #{board_id}")
     void updateBoard(Long board_id, String board_title);

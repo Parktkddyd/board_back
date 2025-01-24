@@ -5,6 +5,7 @@ import com.syp.board_back.dto.board.request.BoardPostRequest;
 import com.syp.board_back.dto.board.request.BoardUpdateRequest;
 import com.syp.board_back.dto.board.response.BoardDeleteResponse;
 import com.syp.board_back.dto.board.response.BoardPostResponse;
+import com.syp.board_back.dto.board.response.BoardReadResponse;
 import com.syp.board_back.dto.board.response.BoardUpdateResponse;
 import com.syp.board_back.dto.common.response.ApiResponse;
 import com.syp.board_back.dto.common.response.ResponseCode;
@@ -46,5 +47,11 @@ public class BoardController {
         }
         return ApiResponse.success(ResponseCode.DELETE_SUCCESS, boardService.delete(board_id),
                 ResponseCode.DELETE_SUCCESS.getMessage());
+    }
+
+    @GetMapping({"/{board_id}", "/"})
+    public ApiResponse<BoardReadResponse> readDetail(@PathVariable(required = false) Long board_id) {
+        return ApiResponse.success(ResponseCode.READ_DETAIL_SUCCESS, boardService.readDetail(board_id),
+                ResponseCode.READ_DETAIL_SUCCESS.getMessage());
     }
 }

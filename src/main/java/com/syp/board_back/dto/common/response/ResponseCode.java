@@ -25,6 +25,8 @@ public enum ResponseCode {
     UPDATE_SUCCESS(HttpStatus.OK, "UPDATE-200", "게시글(댓글) 수정 성공"),
     //게시글 삭제 성공
     DELETE_SUCCESS(HttpStatus.OK, "DELETE-200", "게시글(댓글) 삭제 성공"),
+    //게시글 상세 조회 성공
+    READ_DETAIL_SUCCESS(HttpStatus.OK, "READ-200-1", "게시글 상세 조회 성공"),
     //게시글 찾을 수 없음
     NOT_FOUND(HttpStatus.NOT_FOUND, "NOTFOUND-404", "게시글 또는 댓글 찾을 수 없음"),
     //공통 - 데이터 베이스 오류
