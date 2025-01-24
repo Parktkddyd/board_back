@@ -1,6 +1,6 @@
 package com.syp.board_back.service.user;
 
-import com.syp.board_back.common.exception.DataAccessException;
+import com.syp.board_back.common.exception.DatabaseException;
 import com.syp.board_back.common.util.PasswordEncryptUtil;
 import com.syp.board_back.domain.user.User;
 import com.syp.board_back.dto.common.response.ResponseCode;
@@ -28,7 +28,7 @@ public class SignupService {
             boolean isDuplicate = userMapper.checkDupId(reqId);
             return new DupIdCheckResponse(reqId, isDuplicate);
         } catch (Exception e) {
-            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
+            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
         }
     }
 
@@ -47,9 +47,9 @@ public class SignupService {
             Long addUserOrder = user.getUser_key();
             return new SignUpResponse(addUserOrder);
         } catch (DuplicateKeyException dke) {
-            throw new DataAccessException(ResponseCode.DB_DUPLICATE_ERROR);
+            throw new DatabaseException(ResponseCode.DB_DUPLICATE_ERROR);
         } catch (Exception e) {
-            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
+            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
         }
     }
 }

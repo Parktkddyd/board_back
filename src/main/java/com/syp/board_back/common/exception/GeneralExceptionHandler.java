@@ -27,8 +27,8 @@ public class GeneralExceptionHandler {
         return ApiResponse.fail(e.getResponseCode(), null, e.getResponseCode().getMessage());
     }
 
-    @ExceptionHandler(DataAccessException.class)
-    public ApiResponse<Void> handlerDataAccessException(DataAccessException e) {
+    @ExceptionHandler(DatabaseException.class)
+    public ApiResponse<Void> handlerDataAccessException(DatabaseException e) {
         return ApiResponse.fail(e.getResponseCode(), null, e.getResponseCode().getMessage());
     }
 

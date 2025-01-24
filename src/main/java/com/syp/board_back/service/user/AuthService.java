@@ -1,7 +1,7 @@
 package com.syp.board_back.service.user;
 
 import com.syp.board_back.common.constant.SessionConst;
-import com.syp.board_back.common.exception.DataAccessException;
+import com.syp.board_back.common.exception.DatabaseException;
 import com.syp.board_back.common.exception.LoginException;
 import com.syp.board_back.common.util.PasswordEncryptUtil;
 import com.syp.board_back.domain.user.User;
@@ -66,7 +66,7 @@ public class AuthService {
         String salt = userMapper.findSaltById(reqId);
 
         if (salt == null) {
-            throw new DataAccessException(ResponseCode.DB_SERVER_ERROR);
+            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
         }
 
         return PasswordEncryptUtil.sha256EncryptWithSalt(reqPass, salt);

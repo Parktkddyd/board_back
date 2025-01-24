@@ -2,8 +2,8 @@ package com.syp.board_back.common.exception;
 
 import com.syp.board_back.dto.common.response.ResponseCode;
 
-public class DataAccessException extends BaseException {
-    public DataAccessException(ResponseCode responseCode) {
+public class DatabaseException extends BaseException {
+    public DatabaseException(ResponseCode responseCode) {
         super(responseCode);
     }
 }
