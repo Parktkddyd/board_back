@@ -25,11 +25,11 @@ public interface BoardMapper {
     BoardReadResponse selectBoard(Long board_id);
 
     @Update("UPDATE tbl_board SET board_title = #{board_title}, board_createdAt = now() WHERE board_id = #{board_id}")
-    void updateBoard(Long board_id, String board_title);
+    Long updateBoard(Long board_id, String board_title);
 
     @Update("UPDATE tbl_content SET board_content = #{board_content} WHERE board_id = #{board_id}")
-    void updateContent(Long board_id, String board_content);
+    Long updateContent(Long board_id, String board_content);
 
     @Update("UPDATE tbl_board SET board_isDeleted = 1 WHERE board_id = #{board_id}")
-    void deleteBoard(Long board_id);
+    Long deleteBoard(Long board_id);
 }

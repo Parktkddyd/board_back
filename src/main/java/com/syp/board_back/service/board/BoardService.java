@@ -32,11 +32,7 @@ public class BoardService {
         this.sessionService = sessionService;
     }
 
-    private Long createBoard(String user_id, String title) {
-        Board board = new Board(user_id, title);
-        boardMapper.createBoard(board);
-        return board.getBoard_id();
-    }
+    //Create
 
     public BoardPostResponse post(BoardPostRequest postReq, HttpServletRequest servletReq) {
         SessionResponse session = sessionService.getUserIdBySession(servletReq);
@@ -44,52 +40,93 @@ public class BoardService {
             Long board_id = createBoard(session.getUser_id(), postReq.getBoard_title());
             boardMapper.writeContent(new BoardContent(board_id, postReq.getBoard_content()));
             return new BoardPostResponse(board_id);
-        } catch (Exception e) {
+        } catch (DataAccessException de) {
             throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
         }
     }
 
-    public void modifyBoard(Long board_id, String title) {
-        boardMapper.updateBoard(board_id, title);
+    private Long createBoard(String user_id, String title) {
+        Board board = new Board(user_id, title);
+        boardMapper.createBoard(board);
+        return board.getBoard_id();
     }
 
+    //Update
     public BoardUpdateResponse update(Long board_id, BoardUpdateRequest updateReq) {
-        try {
-            modifyBoard(board_id, updateReq.getBoard_title());
-            boardMapper.updateContent(board_id, updateReq.getBoard_content());
-            return new BoardUpdateResponse(board_id, updateReq.getBoard_title(),
-                    updateReq.getBoard_content());
-        } catch (Exception e) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
-    }
+        findBoardId(board_id);
 
-    public BoardDeleteResponse delete(Long board_id) {
-        try {
-            boardMapper.deleteBoard(board_id);
-            return new BoardDeleteResponse(board_id, (byte) 1);
-        } catch (Exception e) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
-    }
-
-    /*READ*/
-    public BoardReadResponse readDetail(Long board_id) {
-        if (board_id == null) {
+        Long UpdateBoardResult = modifyBoard(board_id, updateReq.getBoard_title());
+        if (UpdateBoardResult <= 0) {
             throw new BoardException(ResponseCode.NOT_FOUND);
         }
 
-        BoardReadResponse br = selectById(board_id);
+        Long UpdateContentResult = modifyContent(board_id, updateReq.getBoard_content());
+        if (UpdateContentResult <= 0) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
+
+        return new BoardUpdateResponse(board_id, updateReq.getBoard_title(),
+                updateReq.getBoard_content());
+    }
+
+    public Long modifyBoard(Long board_id, String title) {
+        try {
+            return boardMapper.updateBoard(board_id, title);
+        } catch (DataAccessException de) {
+            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
+        }
+    }
+
+    public Long modifyContent(Long board_id, String content) {
+        try {
+            return boardMapper.updateContent(board_id, content);
+        } catch (DataAccessException de) {
+            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
+        }
+    }
+
+    //Delete
+    public BoardDeleteResponse delete(Long board_id) {
+        findBoardId(board_id);
+
+        Long DeleteResult = deleteDb(board_id);
+
+        if (DeleteResult <= 0) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
+
+        return new BoardDeleteResponse(board_id, (byte) 1);
+    }
+
+    public Long deleteDb(Long board_id) {
+        try {
+            return boardMapper.deleteBoard(board_id);
+        } catch (DataAccessException de) {
+            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
+        }
+    }
+
+    //SelectOne
+    public BoardReadResponse readDetail(Long board_id) {
+        findBoardId(board_id);
+
+        BoardReadResponse br = selectDb(board_id);
 
         return Optional.ofNullable(br).
                 orElseThrow(() -> new BoardException(ResponseCode.NOT_FOUND));
     }
 
-    public BoardReadResponse selectById(Long board_id) {
+    public BoardReadResponse selectDb(Long board_id) {
         try {
             return boardMapper.selectBoard(board_id);
         } catch (DataAccessException de) {
             throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
+        }
+    }
+    
+    public void findBoardId(Long board_id) {
+        if (board_id == null) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
         }
     }
 }
