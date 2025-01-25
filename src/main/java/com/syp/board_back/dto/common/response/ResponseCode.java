@@ -36,9 +36,9 @@ public enum ResponseCode {
     DB_DUPLICATE_ERROR(HttpStatus.CONFLICT, "D-002", "중복된 값 입니다."),
     //공통 - 세션 인증
     //세션 인증 실패
-    USER_NOT_ACCESS(HttpStatus.FORBIDDEN, "USER-ACCESS-403", "세션이 없는 유저의 접근"),
+    USER_NOT_ACCESS(HttpStatus.FORBIDDEN, "USER-ACCESS-403", "접근 권한이 없습니다."),
     //세션 인증 성공
-    USER_ACCESS_OK(HttpStatus.OK, "USER-ACCESS-200", "세션 인증 성공"),
+    USER_ACCESS_OK(HttpStatus.OK, "USER-ACCESS-200", "인증 성공"),
     //공통 - 유저 입력값 검증
     //검증값 오류
     USER_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "USER-VAL-400", "유효성 검증 실패");

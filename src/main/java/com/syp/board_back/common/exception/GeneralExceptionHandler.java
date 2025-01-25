@@ -36,4 +36,9 @@ public class GeneralExceptionHandler {
     public ApiResponse<Void> handlerBoardException(BoardException e) {
         return ApiResponse.fail(e.getResponseCode(), null, e.getResponseCode().getMessage());
     }
+
+    @ExceptionHandler(SessionException.class)
+    public ApiResponse<Void> handlerSessionException(SessionException e) {
+        return ApiResponse.fail(e.getResponseCode(), null, e.getResponseCode().getMessage());
+    }
 }
