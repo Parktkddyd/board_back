@@ -11,5 +11,4 @@ public class BoardReadResponse {
     private String user_id;
     private String board_createdAt;
     private String board_viewCnt;
-    private String board_content;
 }
