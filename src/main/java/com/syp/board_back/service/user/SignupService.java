@@ -1,16 +1,12 @@
 package com.syp.board_back.service.user;
 
-import com.syp.board_back.common.exception.DatabaseException;
 import com.syp.board_back.common.util.PasswordEncryptUtil;
 import com.syp.board_back.domain.user.User;
-import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.dto.user.request.signup.DupIdCheckRequest;
 import com.syp.board_back.dto.user.request.signup.SignupRequest;
 import com.syp.board_back.dto.user.response.signup.DupIdCheckResponse;
 import com.syp.board_back.dto.user.response.signup.SignUpResponse;
 import com.syp.board_back.mapper.user.UserMapper;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +21,9 @@ public class SignupService {
     @Transactional(readOnly = true)
     public DupIdCheckResponse checkId(DupIdCheckRequest checkIdReq) {
         String reqId = checkIdReq.getUser_id();
-        try {
-            boolean isDuplicate = userMapper.checkDupId(reqId);
-            return new DupIdCheckResponse(reqId, isDuplicate);
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        boolean isDuplicate = userMapper.checkDupId(reqId);
+
+        return new DupIdCheckResponse(reqId, isDuplicate);
     }
 
     @Transactional
@@ -43,14 +36,9 @@ public class SignupService {
                 signupReq.getUser_email(),
                 signupReq.getUser_phone());
 
-        try {
-            userMapper.addUser(user);
-            Long addUserOrder = user.getUser_key();
-            return new SignUpResponse(addUserOrder);
-        } catch (DuplicateKeyException dke) {
-            throw new DatabaseException(ResponseCode.DB_DUPLICATE_ERROR);
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        userMapper.addUser(user);
+        Long addUserOrder = user.getUser_key();
+        return new SignUpResponse(addUserOrder);
+
     }
 }
