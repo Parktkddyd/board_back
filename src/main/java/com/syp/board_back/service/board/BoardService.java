@@ -1,7 +1,6 @@
 package com.syp.board_back.service.board;
 
 import com.syp.board_back.common.exception.BoardException;
-import com.syp.board_back.common.exception.DatabaseException;
 import com.syp.board_back.domain.board.Board;
 import com.syp.board_back.domain.board.BoardContent;
 import com.syp.board_back.dto.board.request.BoardPostRequest;
@@ -12,7 +11,6 @@ import com.syp.board_back.dto.user.response.session.SessionResponse;
 import com.syp.board_back.mapper.board.BoardMapper;
 import com.syp.board_back.service.user.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,13 +32,9 @@ public class BoardService {
 
     public BoardPostResponse post(BoardPostRequest postReq, HttpServletRequest servletReq) {
         SessionResponse session = sessionService.getUserIdBySession(servletReq);
-        try {
-            Long board_id = createBoard(session.getUser_id(), postReq.getBoard_title());
-            boardMapper.writeContent(new BoardContent(board_id, postReq.getBoard_content()));
-            return new BoardPostResponse(board_id);
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        Long board_id = createBoard(session.getUser_id(), postReq.getBoard_title());
+        boardMapper.writeContent(new BoardContent(board_id, postReq.getBoard_content()));
+        return new BoardPostResponse(board_id);
     }
 
     private Long createBoard(String user_id, String title) {
@@ -50,8 +44,9 @@ public class BoardService {
     }
 
     //Update
-    public BoardUpdateResponse update(Long board_id, BoardUpdateRequest updateReq) {
+    public BoardUpdateResponse update(Long board_id, BoardUpdateRequest updateReq, HttpServletRequest servletReq) {
         findBoardId(board_id);
+        sessionService.permissionCheck(servletReq, board_id);
 
         Long UpdateBoardResult = modifyBoard(board_id, updateReq.getBoard_title());
         if (UpdateBoardResult <= 0) {
@@ -68,24 +63,17 @@ public class BoardService {
     }
 
     public Long modifyBoard(Long board_id, String title) {
-        try {
-            return boardMapper.updateBoard(board_id, title);
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        return boardMapper.updateBoard(board_id, title);
     }
 
     public Long modifyContent(Long board_id, String content) {
-        try {
-            return boardMapper.updateContent(board_id, content);
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        return boardMapper.updateContent(board_id, content);
     }
 
     //Delete
-    public BoardDeleteResponse delete(Long board_id) {
+    public BoardDeleteResponse delete(Long board_id, HttpServletRequest servletReq) {
         findBoardId(board_id);
+        sessionService.permissionCheck(servletReq, board_id);
 
         Long DeleteResult = deleteDb(board_id);
 
@@ -97,11 +85,7 @@ public class BoardService {
     }
 
     public Long deleteDb(Long board_id) {
-        try {
-            return boardMapper.deleteBoard(board_id);
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        return boardMapper.deleteBoard(board_id);
     }
 
     //SelectOne
@@ -115,20 +99,12 @@ public class BoardService {
     }
 
     public BoardReadDetailResponse selectDb(Long board_id) {
-        try {
-            return boardMapper.selectBoard(board_id);
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        return boardMapper.selectBoard(board_id);
     }
 
     //SelectList
     public ArrayList<BoardReadResponse> readList() {
-        try {
-            return boardMapper.selectBoardList();
-        } catch (DataAccessException de) {
-            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
-        }
+        return boardMapper.selectBoardList();
     }
 
     public void findBoardId(Long board_id) {

@@ -33,14 +33,16 @@ public class BoardController {
 
     @PutMapping({"/{board_id}", "/"})
     public ApiResponse<BoardUpdateResponse> update(@PathVariable(required = false) Long board_id,
-                                                   @RequestBody @Valid BoardUpdateRequest updateReq) {
-        return ApiResponse.success(ResponseCode.UPDATE_SUCCESS, boardService.update(board_id, updateReq),
+                                                   @RequestBody @Valid BoardUpdateRequest updateReq,
+                                                   HttpServletRequest servletReq) {
+        return ApiResponse.success(ResponseCode.UPDATE_SUCCESS, boardService.update(board_id, updateReq, servletReq),
                 ResponseCode.UPDATE_SUCCESS.getMessage());
     }
 
     @DeleteMapping({"/{board_id}", "/"})
-    public ApiResponse<BoardDeleteResponse> delete(@PathVariable(required = false) Long board_id) {
-        return ApiResponse.success(ResponseCode.DELETE_SUCCESS, boardService.delete(board_id),
+    public ApiResponse<BoardDeleteResponse> delete(@PathVariable(required = false) Long board_id,
+                                                   HttpServletRequest servletReq) {
+        return ApiResponse.success(ResponseCode.DELETE_SUCCESS, boardService.delete(board_id, servletReq),
                 ResponseCode.DELETE_SUCCESS.getMessage());
     }
 

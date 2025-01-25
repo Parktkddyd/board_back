@@ -39,4 +39,7 @@ public interface BoardMapper {
 
     @Update("UPDATE tbl_board SET board_isDeleted = 1 WHERE board_id = #{board_id}")
     Long deleteBoard(Long board_id);
+
+    @Select("SELECT user_id FROM tbl_board WHERE board_id = #{board_id}")
+    String selectUserbyBoardId(Long board_id);
 }
