@@ -2,8 +2,11 @@ package com.syp.board_back.mapper.board;
 
 import com.syp.board_back.domain.board.Board;
 import com.syp.board_back.domain.board.BoardContent;
+import com.syp.board_back.dto.board.response.BoardReadDetailResponse;
 import com.syp.board_back.dto.board.response.BoardReadResponse;
 import org.apache.ibatis.annotations.*;
+
+import java.util.ArrayList;
 
 @Mapper
 public interface BoardMapper {
@@ -22,7 +25,11 @@ public interface BoardMapper {
             "FROM tbl_board AS b " +
             "INNER JOIN tbl_content AS c " +
             "ON b.board_id = c.board_id WHERE c.board_id = #{board_id} AND b.board_isDeleted = 0")
-    BoardReadResponse selectBoard(Long board_id);
+    BoardReadDetailResponse selectBoard(Long board_id);
+
+    @Select("SELECT board_id, board_title, user_id, " +
+            "board_createdAt, board_viewCnt FROM tbl_board WHERE board_isDeleted = 0")
+    ArrayList<BoardReadResponse> selectBoardList();
 
     @Update("UPDATE tbl_board SET board_title = #{board_title}, board_createdAt = now() WHERE board_id = #{board_id}")
     Long updateBoard(Long board_id, String board_title);

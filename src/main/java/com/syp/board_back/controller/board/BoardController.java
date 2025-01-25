@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/boards")
 public class BoardController {
@@ -46,5 +48,11 @@ public class BoardController {
     public ApiResponse<BoardReadResponse> readDetail(@PathVariable(required = false) Long board_id) {
         return ApiResponse.success(ResponseCode.READ_DETAIL_SUCCESS, boardService.readDetail(board_id),
                 ResponseCode.READ_DETAIL_SUCCESS.getMessage());
+    }
+
+    @GetMapping("/list")
+    public ApiResponse<ArrayList<BoardReadResponse>> readList() {
+        return ApiResponse.success(ResponseCode.READ_LIST_SUCCESS, boardService.readList(),
+                ResponseCode.READ_LIST_SUCCESS.getMessage());
     }
 }

@@ -6,10 +6,7 @@ import com.syp.board_back.domain.board.Board;
 import com.syp.board_back.domain.board.BoardContent;
 import com.syp.board_back.dto.board.request.BoardPostRequest;
 import com.syp.board_back.dto.board.request.BoardUpdateRequest;
-import com.syp.board_back.dto.board.response.BoardDeleteResponse;
-import com.syp.board_back.dto.board.response.BoardPostResponse;
-import com.syp.board_back.dto.board.response.BoardReadResponse;
-import com.syp.board_back.dto.board.response.BoardUpdateResponse;
+import com.syp.board_back.dto.board.response.*;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.dto.user.response.session.SessionResponse;
 import com.syp.board_back.mapper.board.BoardMapper;
@@ -19,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -107,23 +105,32 @@ public class BoardService {
     }
 
     //SelectOne
-    public BoardReadResponse readDetail(Long board_id) {
+    public BoardReadDetailResponse readDetail(Long board_id) {
         findBoardId(board_id);
 
-        BoardReadResponse br = selectDb(board_id);
+        BoardReadDetailResponse br = selectDb(board_id);
 
         return Optional.ofNullable(br).
                 orElseThrow(() -> new BoardException(ResponseCode.NOT_FOUND));
     }
 
-    public BoardReadResponse selectDb(Long board_id) {
+    public BoardReadDetailResponse selectDb(Long board_id) {
         try {
             return boardMapper.selectBoard(board_id);
         } catch (DataAccessException de) {
             throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
         }
     }
-    
+
+    //SelectList
+    public ArrayList<BoardReadResponse> readList() {
+        try {
+            return boardMapper.selectBoardList();
+        } catch (DataAccessException de) {
+            throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
+        }
+    }
+
     public void findBoardId(Long board_id) {
         if (board_id == null) {
             throw new BoardException(ResponseCode.NOT_FOUND);
