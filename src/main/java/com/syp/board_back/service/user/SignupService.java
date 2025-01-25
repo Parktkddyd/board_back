@@ -9,6 +9,7 @@ import com.syp.board_back.dto.user.request.signup.SignupRequest;
 import com.syp.board_back.dto.user.response.signup.DupIdCheckResponse;
 import com.syp.board_back.dto.user.response.signup.SignUpResponse;
 import com.syp.board_back.mapper.user.UserMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class SignupService {
         try {
             boolean isDuplicate = userMapper.checkDupId(reqId);
             return new DupIdCheckResponse(reqId, isDuplicate);
-        } catch (Exception e) {
+        } catch (DataAccessException de) {
             throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
         }
     }
@@ -48,7 +49,7 @@ public class SignupService {
             return new SignUpResponse(addUserOrder);
         } catch (DuplicateKeyException dke) {
             throw new DatabaseException(ResponseCode.DB_DUPLICATE_ERROR);
-        } catch (Exception e) {
+        } catch (DataAccessException de) {
             throw new DatabaseException(ResponseCode.DB_SERVER_ERROR);
         }
     }
