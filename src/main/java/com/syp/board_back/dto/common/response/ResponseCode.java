@@ -41,7 +41,9 @@ public enum ResponseCode {
     USER_ACCESS_OK(HttpStatus.OK, "USER-ACCESS-200", "인증 성공"),
     //공통 - 유저 입력값 검증
     //검증값 오류
-    USER_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "USER-VAL-400", "유효성 검증 실패");
+    USER_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "USER-VAL-400", "유효성 검증 실패"),
+    //페이징 파라미터 오류
+    PAGE_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "PAGE-400", "페이지 파라미터 오류");
 
     private final HttpStatus httpStatus;
     private final String customStatusCode;
