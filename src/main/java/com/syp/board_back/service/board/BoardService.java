@@ -11,10 +11,13 @@ import com.syp.board_back.dto.user.response.session.SessionResponse;
 import com.syp.board_back.mapper.board.BoardMapper;
 import com.syp.board_back.service.user.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,13 +92,14 @@ public class BoardService {
     }
 
     //SelectOne
-    public BoardReadDetailResponse readDetail(Long board_id) {
+    public BoardReadDetailResponse readDetail(Long board_id, Pageable page) {
         findBoardId(board_id);
-
         BoardReadDetailResponse br = selectDb(board_id);
-
-        return Optional.ofNullable(br).
+        Optional.ofNullable(br).
                 orElseThrow(() -> new BoardException(ResponseCode.NOT_FOUND));
+
+        br.setPage(page.getPageNumber());
+        return br;
     }
 
     public BoardReadDetailResponse selectDb(Long board_id) {
@@ -103,8 +107,14 @@ public class BoardService {
     }
 
     //SelectList
-    public ArrayList<BoardReadResponse> readList() {
-        return boardMapper.selectBoardList();
+    public Page<BoardReadResponse> readList(Pageable page) {
+        long offset = page.getOffset();
+        long pageSize = page.getPageSize();
+        List<BoardReadResponse> contents = boardMapper.selectBoardList(offset, pageSize);
+
+        int counts = boardMapper.countBoardList(offset, pageSize);
+
+        return new PageImpl<>(contents, page, counts);
     }
 
     public void findBoardId(Long board_id) {

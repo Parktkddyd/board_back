@@ -11,9 +11,10 @@ import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.service.board.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/boards")
@@ -47,14 +48,18 @@ public class BoardController {
     }
 
     @GetMapping({"/{board_id}", "/"})
-    public ApiResponse<BoardReadResponse> readDetail(@PathVariable(required = false) Long board_id) {
-        return ApiResponse.success(ResponseCode.READ_DETAIL_SUCCESS, boardService.readDetail(board_id),
+    public ApiResponse<BoardReadResponse> readDetail(@PathVariable(required = false) Long board_id,
+                                                     @PageableDefault(size = 10) Pageable page) {
+
+        return ApiResponse.success(ResponseCode.READ_DETAIL_SUCCESS, boardService.readDetail(board_id, page),
                 ResponseCode.READ_DETAIL_SUCCESS.getMessage());
     }
 
     @GetMapping("/list")
-    public ApiResponse<ArrayList<BoardReadResponse>> readList() {
-        return ApiResponse.success(ResponseCode.READ_LIST_SUCCESS, boardService.readList(),
+    public ApiResponse<Page<BoardReadResponse>> readList(@PageableDefault(size = 10) Pageable page) {
+        Page<BoardReadResponse> result = boardService.readList(page);
+
+        return ApiResponse.success(ResponseCode.READ_LIST_SUCCESS, result,
                 ResponseCode.READ_LIST_SUCCESS.getMessage());
     }
 }
