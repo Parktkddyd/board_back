@@ -12,7 +12,9 @@ public class Board {
     private String board_title;
     private String user_id;
     private Date board_createdAt;
+    private Date board_updatedAt;
     private int board_viewCnt;
+    private byte board_isDeleted;
 
     public Board(String user_id, String board_title) {
         this.user_id = user_id;
