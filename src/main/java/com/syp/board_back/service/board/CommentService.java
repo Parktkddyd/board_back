@@ -5,16 +5,16 @@ import com.syp.board_back.domain.board.Comment;
 import com.syp.board_back.dto.board.request.CommentPostRequest;
 import com.syp.board_back.dto.board.request.CommentUpdateRequest;
 import com.syp.board_back.dto.board.request.ReCommentPostRequest;
-import com.syp.board_back.dto.board.response.CommentDeleteResponse;
-import com.syp.board_back.dto.board.response.CommentPostResponse;
-import com.syp.board_back.dto.board.response.CommentUpdateResponse;
-import com.syp.board_back.dto.board.response.ReCommentPostResponse;
+import com.syp.board_back.dto.board.response.*;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.mapper.board.CommentMapper;
 import com.syp.board_back.service.user.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -96,6 +96,21 @@ public class CommentService {
         }
 
         return new CommentDeleteResponse(comment_id, (byte) 1);
+    }
+
+    public List<CommentReadResponse> readReplyList() {
+        List<Comment> comments = commentMapper.selectReplyList();
+        List<CommentReadResponse> responseList = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            CommentReadResponse readResponse =
+                    new CommentReadResponse(comment.getComment_id(), comment.getComment_level(),
+                            comment.getComment_parentId(), comment.getUser_id(),
+                            comment.getComment_content(), comment.getComment_createdAt());
+            responseList.add(readResponse);
+        }
+        
+        return responseList;
     }
 
     private void findCommentId(Long comment_id) {

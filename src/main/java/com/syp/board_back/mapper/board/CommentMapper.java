@@ -3,6 +3,8 @@ package com.syp.board_back.mapper.board;
 import com.syp.board_back.domain.board.Comment;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface CommentMapper {
     @Insert("INSERT INTO tbl_comment(board_id, comment_group, user_id, comment_content, comment_createdAt) " +
@@ -39,6 +41,11 @@ public interface CommentMapper {
     @Update("UPDATE tbl_comment SET comment_content = '삭제된 댓글 입니다.', comment_isDeleted = 1 " +
             "WHERE comment_id = #{comment_id}")
     Long deleteReply(Long comment_id);
+
+    @Select("SELECT * FROM tbl_comment WHERE (comment_childCount > 0 AND comment_isDeleted = 1) " +
+            "OR comment_isDeleted = 0 " +
+            "ORDER BY comment_group asc, comment_groupOrder asc")
+    List<Comment> selectReplyList();
 
     @Select("SELECT user_id FROM tbl_comment WHERE comment_id = #{comment_id}")
     String selectUserbyCommentId(Long comment_id);

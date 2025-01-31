@@ -3,15 +3,14 @@ package com.syp.board_back.controller.board;
 import com.syp.board_back.dto.board.request.CommentPostRequest;
 import com.syp.board_back.dto.board.request.CommentUpdateRequest;
 import com.syp.board_back.dto.board.request.ReCommentPostRequest;
-import com.syp.board_back.dto.board.response.CommentDeleteResponse;
-import com.syp.board_back.dto.board.response.CommentPostResponse;
-import com.syp.board_back.dto.board.response.CommentUpdateResponse;
-import com.syp.board_back.dto.board.response.ReCommentPostResponse;
+import com.syp.board_back.dto.board.response.*;
 import com.syp.board_back.dto.common.response.ApiResponse;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.service.board.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/boards/{board_id}/comments")
@@ -50,5 +49,11 @@ public class CommentController {
                                                      HttpServletRequest servletReq) {
         return ApiResponse.success(ResponseCode.DELETE_SUCCESS, commentService.deleteReply(comment_id, servletReq),
                 ResponseCode.DELETE_SUCCESS.getMessage());
+    }
+
+    @GetMapping("")
+    ApiResponse<List<CommentReadResponse>> readCommentList() {
+        return ApiResponse.success(ResponseCode.READ_LIST_SUCCESS, commentService.readReplyList(),
+                ResponseCode.READ_LIST_SUCCESS.getMessage());
     }
 }
