@@ -1,22 +1,23 @@
 package com.syp.board_back.domain.user;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class User {
-    private Long user_key;
-    private String user_id;
-    private String user_password;
-    private String user_salt;
-    private String user_email;
-    private String user_phone;
+    private final Long user_key;
+    private final String user_id;
+    private final String user_password;
+    private final String user_salt;
+    private final String user_email;
+    private final String user_phone;
 
+
+    //회원가입 시 사용할 생성자
     public User(String user_id, String user_password, String user_salt,
                 String user_email, String user_phone) {
-        this.user_id = user_id;
-        this.user_password = user_password;
-        this.user_salt = user_salt;
-        this.user_email = user_email;
-        this.user_phone = user_phone;
+        this(null, user_id, user_password, user_salt,
+                user_email, user_phone);
     }
 }

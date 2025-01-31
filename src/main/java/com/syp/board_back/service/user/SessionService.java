@@ -24,8 +24,8 @@ public class SessionService {
 
     public LoginResponse sessionCheck(HttpServletRequest servletReq) {
         HttpSession session = servletReq.getSession(false);
-
-        return new LoginResponse(session.getId());
+        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        return new LoginResponse(user.getUser_id(), true);
     }
 
     public SessionResponse getUserIdBySession(HttpServletRequest servletReq) {

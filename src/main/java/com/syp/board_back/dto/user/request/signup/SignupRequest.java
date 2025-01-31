@@ -3,9 +3,11 @@ package com.syp.board_back.dto.user.request.signup;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class SignupRequest {
     @NotBlank
     private String user_id;

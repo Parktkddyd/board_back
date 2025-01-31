@@ -6,5 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LoginResponse {
-    String session_id;
+    private String user_id;
+    private boolean success;
 }

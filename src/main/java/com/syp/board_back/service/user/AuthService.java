@@ -34,7 +34,7 @@ public class AuthService {
         //로그인 성공 시 세션을 생성하고 사용자 정보 저장
         HttpSession session = servletReq.getSession();
         session.setAttribute(SessionConst.LOGIN_USER, user);
-        return new LoginResponse(session.getId());
+        return new LoginResponse(reqId, true);
 
     }
 
