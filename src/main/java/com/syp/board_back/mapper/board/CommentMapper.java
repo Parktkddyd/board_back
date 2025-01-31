@@ -32,5 +32,10 @@ public interface CommentMapper {
             "comment_groupOrder > (#{comment_childCount} + #{comment_groupOrder})")
     void increaseGroupOrder(int comment_group, int comment_childCount, int comment_groupOrder);
 
-    
+    @Update("UPDATE tbl_comment SET comment_content = #{comment_content}, comment_updatedAt = now() " +
+            "WHERE comment_id = #{comment_id}")
+    Long updateReply(Long comment_id, String comment_content);
+
+    @Select("SELECT user_id FROM tbl_comment WHERE comment_id = #{comment_id}")
+    String selectUserbyCommentId(Long comment_id);
 }

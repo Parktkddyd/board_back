@@ -3,8 +3,10 @@ package com.syp.board_back.service.board;
 import com.syp.board_back.common.exception.BoardException;
 import com.syp.board_back.domain.board.Comment;
 import com.syp.board_back.dto.board.request.CommentPostRequest;
+import com.syp.board_back.dto.board.request.CommentUpdateRequest;
 import com.syp.board_back.dto.board.request.ReCommentPostRequest;
 import com.syp.board_back.dto.board.response.CommentPostResponse;
+import com.syp.board_back.dto.board.response.CommentUpdateResponse;
 import com.syp.board_back.dto.board.response.ReCommentPostResponse;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.mapper.board.CommentMapper;
@@ -66,5 +68,25 @@ public class CommentService {
 
     private void increaseGroupOrder(int group, int childCount, int groupOrder) {
         commentMapper.increaseGroupOrder(group, childCount, groupOrder);
+    }
+
+    public CommentUpdateResponse updateReply(Long comment_id, CommentUpdateRequest updateReq,
+                                             HttpServletRequest servletReq) {
+        findCommentId(comment_id);
+        sessionService.CommentPermissionCheck(servletReq, comment_id);
+
+        long updateResult = commentMapper.updateReply(comment_id, updateReq.getComment_content());
+
+        if (updateResult <= 0) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
+
+        return new CommentUpdateResponse(comment_id, updateReq.getComment_content());
+    }
+
+    private void findCommentId(Long comment_id) {
+        if (comment_id == null) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
     }
 }
