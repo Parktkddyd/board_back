@@ -1,7 +1,9 @@
 package com.syp.board_back.controller.board;
 
 import com.syp.board_back.dto.board.request.CommentPostRequest;
+import com.syp.board_back.dto.board.request.ReCommentPostRequest;
 import com.syp.board_back.dto.board.response.CommentPostResponse;
+import com.syp.board_back.dto.board.response.ReCommentPostResponse;
 import com.syp.board_back.dto.common.response.ApiResponse;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.service.board.CommentService;
@@ -25,4 +27,10 @@ public class CommentController {
                 ResponseCode.POST_SUCCESS.getMessage());
     }
 
+    @PostMapping("/repost")
+    ApiResponse<ReCommentPostResponse> postReComment(@RequestBody ReCommentPostRequest repostReq,
+                                                     HttpServletRequest servletReq) {
+        return ApiResponse.success(ResponseCode.POST_SUCCESS, commentService.postReReply(repostReq, servletReq),
+                ResponseCode.POST_SUCCESS.getMessage());
+    }
 }

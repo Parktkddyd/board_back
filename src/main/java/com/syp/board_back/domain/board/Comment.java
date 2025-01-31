@@ -14,7 +14,7 @@ public class Comment {
     private int comment_level;
     private int comment_groupOrder;
     private int comment_childCount;
-    private Integer comment_parentId;
+    private Long comment_parentId;
     private String user_id;
     private String comment_content;
     private Date comment_createdAt;
@@ -25,5 +25,17 @@ public class Comment {
         this.board_id = board_id;
         this.user_id = user_id;
         this.comment_content = comment_content;
+    }
+
+    public Comment(String user_id, Long parent_id, String comment_content,
+                   int comment_group, int comment_level, int comment_groupOrder,
+                   Long board_id) {
+        this.user_id = user_id;
+        this.comment_parentId = parent_id;
+        this.comment_content = comment_content;
+        this.comment_group = comment_group;
+        this.comment_level = comment_level;
+        this.comment_groupOrder = comment_groupOrder;
+        this.board_id = board_id;
     }
 }
