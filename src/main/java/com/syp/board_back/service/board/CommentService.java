@@ -5,6 +5,7 @@ import com.syp.board_back.domain.board.Comment;
 import com.syp.board_back.dto.board.request.CommentPostRequest;
 import com.syp.board_back.dto.board.request.CommentUpdateRequest;
 import com.syp.board_back.dto.board.request.ReCommentPostRequest;
+import com.syp.board_back.dto.board.response.CommentDeleteResponse;
 import com.syp.board_back.dto.board.response.CommentPostResponse;
 import com.syp.board_back.dto.board.response.CommentUpdateResponse;
 import com.syp.board_back.dto.board.response.ReCommentPostResponse;
@@ -82,6 +83,19 @@ public class CommentService {
         }
 
         return new CommentUpdateResponse(comment_id, updateReq.getComment_content());
+    }
+
+    public CommentDeleteResponse deleteReply(Long comment_id, HttpServletRequest servletReq) {
+        findCommentId(comment_id);
+        sessionService.CommentPermissionCheck(servletReq, comment_id);
+
+        long deleteResult = commentMapper.deleteReply(comment_id);
+
+        if (deleteResult <= 0) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
+
+        return new CommentDeleteResponse(comment_id, (byte) 1);
     }
 
     private void findCommentId(Long comment_id) {

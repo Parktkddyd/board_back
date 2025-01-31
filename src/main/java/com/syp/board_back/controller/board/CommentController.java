@@ -3,6 +3,7 @@ package com.syp.board_back.controller.board;
 import com.syp.board_back.dto.board.request.CommentPostRequest;
 import com.syp.board_back.dto.board.request.CommentUpdateRequest;
 import com.syp.board_back.dto.board.request.ReCommentPostRequest;
+import com.syp.board_back.dto.board.response.CommentDeleteResponse;
 import com.syp.board_back.dto.board.response.CommentPostResponse;
 import com.syp.board_back.dto.board.response.CommentUpdateResponse;
 import com.syp.board_back.dto.board.response.ReCommentPostResponse;
@@ -42,5 +43,12 @@ public class CommentController {
                                                      HttpServletRequest servletReq) {
         return ApiResponse.success(ResponseCode.UPDATE_SUCCESS, commentService.updateReply(comment_id, updateReq, servletReq),
                 ResponseCode.UPDATE_SUCCESS.getMessage());
+    }
+
+    @DeleteMapping("/{comment_id}")
+    ApiResponse<CommentDeleteResponse> deleteComment(@PathVariable("comment_id") Long comment_id,
+                                                     HttpServletRequest servletReq) {
+        return ApiResponse.success(ResponseCode.DELETE_SUCCESS, commentService.deleteReply(comment_id, servletReq),
+                ResponseCode.DELETE_SUCCESS.getMessage());
     }
 }

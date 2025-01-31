@@ -36,6 +36,10 @@ public interface CommentMapper {
             "WHERE comment_id = #{comment_id}")
     Long updateReply(Long comment_id, String comment_content);
 
+    @Update("UPDATE tbl_comment SET comment_content = '삭제된 댓글 입니다.', comment_isDeleted = 1 " +
+            "WHERE comment_id = #{comment_id}")
+    Long deleteReply(Long comment_id);
+
     @Select("SELECT user_id FROM tbl_comment WHERE comment_id = #{comment_id}")
     String selectUserbyCommentId(Long comment_id);
 }
