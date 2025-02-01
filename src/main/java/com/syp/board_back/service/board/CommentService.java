@@ -28,6 +28,10 @@ public class CommentService {
     }
 
     public CommentPostResponse postReply(Long board_id, CommentPostRequest postReq, HttpServletRequest servletReq) {
+        if (board_id == null) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
+        
         String user_id = sessionService.getUserIdBySession(servletReq).getUser_id();
         Comment comment = new Comment(board_id, user_id, postReq.getComment_content());
         commentMapper.postReply(comment);
@@ -37,6 +41,10 @@ public class CommentService {
     public ReCommentPostResponse postReReply(ReCommentPostRequest postReq, HttpServletRequest servletReq) {
         String user_id = sessionService.getUserIdBySession(servletReq).getUser_id();
         Long parent_id = postReq.getParent_id();
+        if (parent_id == null) {
+            throw new BoardException(ResponseCode.NOT_FOUND);
+        }
+
         //1. 부모 댓글 정보를 가져옴
         Comment parentComment = commentMapper.selectParentComment(parent_id);
 
@@ -46,10 +54,7 @@ public class CommentService {
                 parentComment.getComment_groupOrder());
 
         //3. 부모의 자식 개수 1 증가 (댓글 추가로 인한)
-        long updateChildCount = increaseChildCount(parent_id);
-        if (updateChildCount <= 0) {
-            throw new BoardException(ResponseCode.NOT_FOUND);
-        }
+        increaseChildCount(parent_id);
 
         //3. 결과를 VO에 매핑
         Comment reComment = new Comment(user_id, parent_id, postReq.getComment_content(),
@@ -63,8 +68,8 @@ public class CommentService {
                 user_id, parent_id);
     }
 
-    private long increaseChildCount(Long comment_id) {
-        return commentMapper.increaseChildCount(comment_id);
+    private void increaseChildCount(Long comment_id) {
+        commentMapper.increaseChildCount(comment_id);
     }
 
     private void increaseGroupOrder(int group, int childCount, int groupOrder) {
@@ -109,7 +114,7 @@ public class CommentService {
                             comment.getComment_content(), comment.getComment_createdAt());
             responseList.add(readResponse);
         }
-        
+
         return responseList;
     }
 
