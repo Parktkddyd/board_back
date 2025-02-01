@@ -1,11 +1,11 @@
 package com.syp.board_back.domain.board;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.Date;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class Comment {
     private Long comment_id;
