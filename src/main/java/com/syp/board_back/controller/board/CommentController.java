@@ -22,7 +22,7 @@ public class CommentController {
     }
 
     @PostMapping("/post")
-    ApiResponse<CommentPostResponse> postComment(@PathVariable("board_id") Long board_id,
+    ApiResponse<CommentPostResponse> postComment(@PathVariable(value = "board_id", required = false) Long board_id,
                                                  @RequestBody CommentPostRequest postReq,
                                                  HttpServletRequest servletReq) {
         return ApiResponse.success(ResponseCode.POST_SUCCESS, commentService.postReply(board_id, postReq, servletReq),
@@ -37,7 +37,7 @@ public class CommentController {
     }
 
     @PutMapping("/{comment_id}")
-    ApiResponse<CommentUpdateResponse> updateComment(@PathVariable("comment_id") Long comment_id,
+    ApiResponse<CommentUpdateResponse> updateComment(@PathVariable(value = "comment_id", required = false) Long comment_id,
                                                      @RequestBody CommentUpdateRequest updateReq,
                                                      HttpServletRequest servletReq) {
         return ApiResponse.success(ResponseCode.UPDATE_SUCCESS, commentService.updateReply(comment_id, updateReq, servletReq),
@@ -45,7 +45,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{comment_id}")
-    ApiResponse<CommentDeleteResponse> deleteComment(@PathVariable("comment_id") Long comment_id,
+    ApiResponse<CommentDeleteResponse> deleteComment(@PathVariable(value = "comment_id", required = false) Long comment_id,
                                                      HttpServletRequest servletReq) {
         return ApiResponse.success(ResponseCode.DELETE_SUCCESS, commentService.deleteReply(comment_id, servletReq),
                 ResponseCode.DELETE_SUCCESS.getMessage());

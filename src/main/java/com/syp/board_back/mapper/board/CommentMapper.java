@@ -27,7 +27,7 @@ public interface CommentMapper {
     Comment selectParentComment(Long comment_id);
 
     @Update("UPDATE tbl_comment SET comment_childCount = comment_childCount +1 WHERE comment_id = #{comment_id]}")
-    Long increaseChildCount(Long comment_id);
+    void increaseChildCount(Long comment_id);
 
     @Update("UPDATE tbl_comment SET comment_groupOrder = comment_groupOrder +1 " +
             "WHERE comment_group = #{comment_group} AND " +
@@ -36,11 +36,11 @@ public interface CommentMapper {
 
     @Update("UPDATE tbl_comment SET comment_content = #{comment_content}, comment_updatedAt = now() " +
             "WHERE comment_id = #{comment_id}")
-    Long updateReply(Long comment_id, String comment_content);
+    long updateReply(Long comment_id, String comment_content);
 
     @Update("UPDATE tbl_comment SET comment_content = '삭제된 댓글 입니다.', comment_isDeleted = 1 " +
             "WHERE comment_id = #{comment_id}")
-    Long deleteReply(Long comment_id);
+    long deleteReply(Long comment_id);
 
     @Select("SELECT * FROM tbl_comment WHERE (comment_childCount > 0 AND comment_isDeleted = 1) " +
             "OR comment_isDeleted = 0 " +
