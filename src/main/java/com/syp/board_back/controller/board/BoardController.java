@@ -55,7 +55,7 @@ public class BoardController {
                 ResponseCode.READ_DETAIL_SUCCESS.getMessage());
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     public ApiResponse<Page<BoardReadResponse>> readList(@PageableDefault(size = 10) Pageable page) {
         Page<BoardReadResponse> result = boardService.readList(page);
 

@@ -32,16 +32,16 @@ public interface BoardMapper {
     List<BoardReadResponse> selectBoardList(long offset, long pageSize);
 
     @Select("SELECT COUNT(*) FROM tbl_board WHERE board_isDeleted = 0")
-    int countBoardList(long offset, long pageSize);
+    long countBoardList(long offset, long pageSize);
 
     @Update("UPDATE tbl_board SET board_title = #{board_title}, board_updatedAt = now() WHERE board_id = #{board_id}")
-    Long updateBoard(Long board_id, String board_title);
+    long updateBoard(Long board_id, String board_title);
 
     @Update("UPDATE tbl_content SET board_content = #{board_content} WHERE board_id = #{board_id}")
-    Long updateContent(Long board_id, String board_content);
+    long updateContent(Long board_id, String board_content);
 
     @Update("UPDATE tbl_board SET board_isDeleted = 1 WHERE board_id = #{board_id}")
-    Long deleteBoard(Long board_id);
+    long deleteBoard(Long board_id);
 
     @Select("SELECT user_id FROM tbl_board WHERE board_id = #{board_id}")
     String selectUserbyBoardId(Long board_id);

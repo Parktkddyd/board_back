@@ -51,12 +51,12 @@ public class BoardService {
         findBoardId(board_id);
         sessionService.permissionCheck(servletReq, board_id);
 
-        Long UpdateBoardResult = modifyBoard(board_id, updateReq.getBoard_title());
+        long UpdateBoardResult = modifyBoard(board_id, updateReq.getBoard_title());
         if (UpdateBoardResult <= 0) {
             throw new BoardException(ResponseCode.NOT_FOUND);
         }
 
-        Long UpdateContentResult = modifyContent(board_id, updateReq.getBoard_content());
+        long UpdateContentResult = modifyContent(board_id, updateReq.getBoard_content());
         if (UpdateContentResult <= 0) {
             throw new BoardException(ResponseCode.NOT_FOUND);
         }
@@ -65,11 +65,11 @@ public class BoardService {
                 updateReq.getBoard_content());
     }
 
-    public Long modifyBoard(Long board_id, String title) {
+    public long modifyBoard(Long board_id, String title) {
         return boardMapper.updateBoard(board_id, title);
     }
 
-    public Long modifyContent(Long board_id, String content) {
+    public long modifyContent(Long board_id, String content) {
         return boardMapper.updateContent(board_id, content);
     }
 
@@ -78,7 +78,7 @@ public class BoardService {
         findBoardId(board_id);
         sessionService.permissionCheck(servletReq, board_id);
 
-        Long DeleteResult = deleteDb(board_id);
+        long DeleteResult = deleteDb(board_id);
 
         if (DeleteResult <= 0) {
             throw new BoardException(ResponseCode.NOT_FOUND);
@@ -87,7 +87,7 @@ public class BoardService {
         return new BoardDeleteResponse(board_id, (byte) 1);
     }
 
-    public Long deleteDb(Long board_id) {
+    public long deleteDb(Long board_id) {
         return boardMapper.deleteBoard(board_id);
     }
 
@@ -112,7 +112,7 @@ public class BoardService {
         long pageSize = page.getPageSize();
         List<BoardReadResponse> contents = boardMapper.selectBoardList(offset, pageSize);
 
-        int counts = boardMapper.countBoardList(offset, pageSize);
+        long counts = boardMapper.countBoardList(offset, pageSize);
 
         return new PageImpl<>(contents, page, counts);
     }
