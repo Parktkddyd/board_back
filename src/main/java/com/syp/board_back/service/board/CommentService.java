@@ -10,6 +10,9 @@ import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.mapper.board.CommentMapper;
 import com.syp.board_back.service.user.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +34,7 @@ public class CommentService {
         if (board_id == null) {
             throw new BoardException(ResponseCode.NOT_FOUND);
         }
-        
+
         String user_id = sessionService.getUserIdBySession(servletReq).getUser_id();
         Comment comment = new Comment(board_id, user_id, postReq.getComment_content());
         commentMapper.postReply(comment);
@@ -103,8 +106,12 @@ public class CommentService {
         return new CommentDeleteResponse(comment_id, (byte) 1);
     }
 
-    public List<CommentReadResponse> readReplyList() {
-        List<Comment> comments = commentMapper.selectReplyList();
+    public Page<CommentReadResponse> readReplyList(Long board_id, Pageable page) {
+        long offset = page.getOffset();
+        long pageSize = page.getPageSize();
+
+        List<Comment> comments = commentMapper.selectReplyList(board_id, offset, pageSize);
+        long counts = commentMapper.countComment();
         List<CommentReadResponse> responseList = new ArrayList<>();
 
         for (Comment comment : comments) {
@@ -114,8 +121,8 @@ public class CommentService {
                             comment.getComment_content(), comment.getComment_createdAt());
             responseList.add(readResponse);
         }
-
-        return responseList;
+        
+        return new PageImpl<>(responseList, page, counts);
     }
 
     private void findCommentId(Long comment_id) {

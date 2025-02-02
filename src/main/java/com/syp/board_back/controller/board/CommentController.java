@@ -8,9 +8,10 @@ import com.syp.board_back.dto.common.response.ApiResponse;
 import com.syp.board_back.dto.common.response.ResponseCode;
 import com.syp.board_back.service.board.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/boards/{board_id}/comments")
@@ -52,8 +53,9 @@ public class CommentController {
     }
 
     @GetMapping("")
-    ApiResponse<List<CommentReadResponse>> readCommentList() {
-        return ApiResponse.success(ResponseCode.READ_LIST_SUCCESS, commentService.readReplyList(),
+    ApiResponse<Page<CommentReadResponse>> readCommentList(@PathVariable(value = "board_id", required = false) Long board_id,
+                                                           @PageableDefault(size = 10) Pageable pageable) {
+        return ApiResponse.success(ResponseCode.READ_LIST_SUCCESS, commentService.readReplyList(board_id, pageable),
                 ResponseCode.READ_LIST_SUCCESS.getMessage());
     }
 }

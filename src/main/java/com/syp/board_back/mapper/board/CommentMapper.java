@@ -42,10 +42,17 @@ public interface CommentMapper {
             "WHERE comment_id = #{comment_id}")
     long deleteReply(Long comment_id);
 
-    @Select("SELECT * FROM tbl_comment WHERE (comment_childCount > 0 AND comment_isDeleted = 1) " +
+    @Select("SELECT * FROM tbl_comment WHERE board_id = #{board_id} AND " +
+            "(comment_childCount > 0 AND comment_isDeleted = 1) " +
             "OR comment_isDeleted = 0 " +
-            "ORDER BY comment_group asc, comment_groupOrder asc")
-    List<Comment> selectReplyList();
+            "ORDER BY comment_group asc, comment_groupOrder asc " +
+            "LIMIT #{offset}, #{pageSize} ")
+    List<Comment> selectReplyList(long board_id, long offset, long pageSize);
+
+    @Select("SELECT COUNT(*) FROM tbl_comment " +
+            "WHERE (comment_childCount > 0 AND comment_isDeleted = 1) " +
+            "OR comment_isDeleted = 0")
+    long countComment();
 
     @Select("SELECT user_id FROM tbl_comment WHERE comment_id = #{comment_id}")
     String selectUserbyCommentId(Long comment_id);
