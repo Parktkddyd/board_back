@@ -7,10 +7,7 @@ import com.syp.board_back.dto.user.response.login.LoginResponse;
 import com.syp.board_back.service.user.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -27,7 +24,7 @@ public class AuthController {
                 ResponseCode.USER_LOGIN_SUCCESS.getMessage());
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ApiResponse<Void> logout(HttpServletRequest servletReq) {
         authService.logout(servletReq);
         return ApiResponse.success(ResponseCode.USER_LOGOUT_SUCCESS, null,
