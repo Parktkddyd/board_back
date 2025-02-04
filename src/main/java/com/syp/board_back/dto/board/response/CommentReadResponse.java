@@ -16,4 +16,5 @@ public class CommentReadResponse {
     private String user_id;
     private String comment_content;
     private Date comment_postedTime;
+    private byte comment_isDeleted;
 }

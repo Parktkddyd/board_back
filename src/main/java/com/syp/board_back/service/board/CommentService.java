@@ -47,25 +47,32 @@ public class CommentService {
         if (parent_id == null) {
             throw new BoardException(ResponseCode.NOT_FOUND);
         }
-
-        //1. 부모 댓글 정보를 가져옴
+        //1. 부모 댓글을 불러옴
         Comment parentComment = commentMapper.selectParentComment(parent_id);
+        //2. 같은 부모를 가진 댓글 중 순서가 최대인 댓글 정보 가져옴
+        Comment maxGroupOrderComment = commentMapper.maxGroupOrder(parent_id);
+        int maxGroupOrder = parentComment.getComment_groupOrder();
+        int maxChildCount = 0;
 
-        //2. 부모와 같은 group에서 부모의 자식 댓글 개수 + 부모의 그룹 내의 순서의 값을 합한 값보다 큰 순서들을 1씩 더함
+        if (maxGroupOrderComment != null) {
+            maxGroupOrder = maxGroupOrderComment.getComment_groupOrder();
+            maxChildCount = maxGroupOrderComment.getComment_childCount();
+        }
+
+        //3. 삽입할 댓글의 순서보다 큰 댓글들의 순서를 1씩 증가
         increaseGroupOrder(parentComment.getComment_group(),
-                parentComment.getComment_childCount(),
-                parentComment.getComment_groupOrder());
+                maxGroupOrder + maxChildCount + 1);
 
-        //3. 부모의 자식 개수 1 증가 (댓글 추가로 인한)
-        increaseChildCount(parent_id);
-
-        //3. 결과를 VO에 매핑
+        //3. VO에 매핑 후 comment 삽입
         Comment reComment = new Comment(user_id, parent_id, postReq.getComment_content(),
                 parentComment.getComment_group(), parentComment.getComment_level() + 1,
-                parentComment.getComment_groupOrder() + parentComment.getComment_childCount() + 1,
+                maxGroupOrder + maxChildCount + 1,
                 parentComment.getBoard_id());
-
         commentMapper.postReReply(reComment);
+
+
+        //5. 부모의 자식 개수 1 증가 (댓글 추가로 인한)
+        increaseChildCount(parent_id);
 
         return new ReCommentPostResponse(reComment.getBoard_id(), reComment.getComment_id(),
                 user_id, parent_id);
@@ -75,8 +82,8 @@ public class CommentService {
         commentMapper.increaseChildCount(comment_id);
     }
 
-    private void increaseGroupOrder(int group, int childCount, int groupOrder) {
-        commentMapper.increaseGroupOrder(group, childCount, groupOrder);
+    private void increaseGroupOrder(int group, int groupOrder) {
+        commentMapper.increaseGroupOrder(group, groupOrder);
     }
 
     public CommentUpdateResponse updateReply(Long comment_id, CommentUpdateRequest updateReq,
@@ -103,6 +110,8 @@ public class CommentService {
             throw new BoardException(ResponseCode.NOT_FOUND);
         }
 
+        commentMapper.decreaseParentChildCount(comment_id);
+
         return new CommentDeleteResponse(comment_id, (byte) 1);
     }
 
@@ -111,17 +120,17 @@ public class CommentService {
         long pageSize = page.getPageSize();
 
         List<Comment> comments = commentMapper.selectReplyList(board_id, offset, pageSize);
-        long counts = commentMapper.countComment();
+        long counts = commentMapper.countComment(board_id, offset, pageSize);
         List<CommentReadResponse> responseList = new ArrayList<>();
 
         for (Comment comment : comments) {
             CommentReadResponse readResponse =
                     new CommentReadResponse(comment.getComment_id(), comment.getComment_level(),
                             comment.getComment_parentId(), comment.getUser_id(),
-                            comment.getComment_content(), comment.getComment_createdAt());
+                            comment.getComment_content(), comment.getComment_createdAt(), comment.getComment_isDeleted());
             responseList.add(readResponse);
         }
-        
+
         return new PageImpl<>(responseList, page, counts);
     }
 
