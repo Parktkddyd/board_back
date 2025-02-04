@@ -54,7 +54,7 @@ public class CommentController {
 
     @GetMapping("")
     ApiResponse<Page<CommentReadResponse>> readCommentList(@PathVariable(value = "board_id", required = false) Long board_id,
-                                                           @PageableDefault(size = 10) Pageable pageable) {
+                                                           @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ApiResponse.success(ResponseCode.READ_LIST_SUCCESS, commentService.readReplyList(board_id, pageable),
                 ResponseCode.READ_LIST_SUCCESS.getMessage());
     }
