@@ -35,14 +35,14 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionCheckInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/users/login", "/users/signup", "/boards/**");
+                .excludePathPatterns("/users/login", "/users/signup/**", "/boards");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(allowedOrigin)
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedOriginPatterns(allowedOrigin)
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
         WebMvcConfigurer.super.addCorsMappings(registry);
