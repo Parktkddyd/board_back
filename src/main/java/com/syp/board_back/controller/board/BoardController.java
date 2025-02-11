@@ -17,7 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/boards")
+@RequestMapping("/api/v1/boards")
 public class BoardController {
     private final BoardService boardService;
 

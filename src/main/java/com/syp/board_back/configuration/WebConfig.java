@@ -35,7 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionCheckInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/users/login", "/users/signup/**", "/boards");
+                .excludePathPatterns("/api/v1/users/login", "/api/v1/users/signup/**", "/api/v1/boards");
     }
 
     @Override
