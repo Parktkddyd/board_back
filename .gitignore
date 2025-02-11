@@ -35,3 +35,6 @@ build/
 #property
 *.yml
 *.properties
+
+#environment files
+.env
